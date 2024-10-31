@@ -10,7 +10,3 @@ def check_luhn(number: int) -> bool:  # Luhn check
 def check_luhn(number: str, check_digit: int = 0) -> bool:  # Luhn check
     digits = list(map(int, number))
     return check_digit == sum(digits + [d + (d > 4) for d in digits[-2::-2]]) % 10
-    # luhnsum = sum(digits + [ d + (d > 4) for d in digits[-2::-2] ])
-    # remainder = luhnsum % 10
-    # logger.debug("Sum: %d, remainder: %d", luhnsum, remainder)
-    # return check_digit == remainder

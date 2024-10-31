@@ -59,9 +59,6 @@ def ic_details(code: str) -> str:
 
 
 def sr_details(code: str) -> str:
-    # if code == "=":
-    #     return "No details for unused field"
-
     digit1 = code[0]
     digit2 = code[1]
     result = ""

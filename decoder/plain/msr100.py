@@ -13,35 +13,33 @@ TRACK_1 = 0
 TRACK_2 = 1
 TRACK_3 = 2
 
+
 class Decoder(BaseDecoder):
 
     _remap_to_us = False
 
-    def __init__(self, remap_to_us:False) -> None:
+    def __init__(self, remap_to_us: False) -> None:
         super().__init__()
         self._remap_to_us = remap_to_us
 
-    def _build_result(self, key_events: list, remap_to_us: bool=False) -> list:
-        logger.debug("Reader input took %d seconds, %d keystrokes", key_events[-1].time - key_events[0].time, len(key_events))
+    def _build_result(self, key_events: list, remap_to_us: bool = False) -> list:
+        logger.debug("Reader input took %d seconds, %d keystrokes",
+                     key_events[-1].time - key_events[0].time, len(key_events))
         data_read = []
         b = None
         buf = ""
         for e in key_events:
             map_name = ""
-            # print("raw", e.name, e.scan_code, e.event_type)
-            # if b is None or e.event_type == keyboard.KEY_UP or (e.event_type == keyboard.KEY_DOWN and "shift" in e.name):
             if e.event_type == keyboard.KEY_UP or (e.event_type == keyboard.KEY_DOWN and "shift" in e.name):
                 b = e
                 continue
             if e.event_type == keyboard.KEY_DOWN and b is not None and b.event_type == keyboard.KEY_DOWN and "shift" in b.name:
                 # Shift pressed before key
                 map_name = f"shift-{e.scan_code}"
-                # print (f"{map_name} ({e.name})")
             else:
                 map_name = f"{e.scan_code}"
-                # print(f"{map_name} ({e.name})")
             b = e
-            if e.name == "enter": # New line
+            if e.name == "enter":  # New line
                 if len(buf) > 0:
                     data_read.append(buf)
                     logger.debug("read buffer: '%s'", buf)
@@ -84,34 +82,33 @@ class Decoder(BaseDecoder):
                 if len_read > 0:
                     data_in_end = True
         finally:
-            self.flush_input() # Flush the keyboard input buffer that was filled during record
+            self.flush_input()  # Flush the keyboard input buffer that was filled during record
 
         data_read = self._build_result(key_events=key_events)
 
-        if len(data_read) == 3: # All tracks have data, we're done
+        if len(data_read) == 3:  # All tracks have data, we're done
             logger.debug("3 track read")
             result = (data_read[0], data_read[1], data_read[2])
 
-        # Do some guesswork based on iso7813
-
-        elif len(data_read) == 2: # Do some guesswork based on iso7813
+        elif len(data_read) == 2:  # Do some guesswork based on iso7813
             logger.debug("2 tracks read")
             # This could be:
             # * track 1 + track 2
             # * track 1 + track 3
             # * track 2 + track 3
             start_sentinels = (data_read[0][0], data_read[1][0])
-            if start_sentinels[0] == sentinels[2][SS]: # This can only be track 2 + 3
+            if start_sentinels[0] == sentinels[2][SS]:  # This can only be track 2 + 3
                 result[TRACK_2] = data_read[0]
                 result[TRACK_3] = data_read[1]
-            elif len(data_read[1]) > 40: # This is track 1 + 3, since track 2 only contains 40 symbols max
+            # This is track 1 + 3, since track 2 only contains 40 symbols max
+            elif len(data_read[1]) > 40:
                 result[TRACK_1] = data_read[0]
                 result[TRACK_3] = data_read[1]
-            else: # track 1 + 2
+            else:  # track 1 + 2
                 result[TRACK_1] = data_read[0]
                 result[TRACK_2] = data_read[1]
 
-        elif len(data_read) == 1:
+        elif len(data_read) == 1:  # Do some guesswork based on iso7813
             logger.debug("1 track read")
             start_sentinel = data_read[0][0]
             data_len = len(data_read[0])
