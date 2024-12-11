@@ -32,9 +32,9 @@ def main():
     ap.add_argument("--loop", action="store_true",
                     default=False, help="Loop reading cards")
     ap.add_argument("--print-verbose", action="store_true",
-                    default=False, help="Print verbose trackd data")
+                    default=False, help="Print verbose track data")
     ap.add_argument("--log-level", choices=list(logging.getLevelNamesMapping().keys()),
-                    default=logging.INFO, help="Print verbose trackd data")
+                    default=logging.INFO, help="Print verbose track data")
     args = ap.parse_args()
 
     logging.basicConfig(level=logging.getLevelName(args.log_level))
