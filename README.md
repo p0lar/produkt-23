@@ -16,7 +16,7 @@ The main script can read data from various sources:
 
 * RAW data from a file (read bits on the first line) or stdin
 * Sigrok csv data
-* Cheap MSR-100 (or similar) 3-track magnetics card reader via USB. In case you've no US keyboard on site, a remapping from US keyboard scancodes exist to retrieve the correct data (Some cheap readers disregard the USB-HID scancodes).
+* Cheap MSR-100 (or similar) 3-track magnetic card reader via USB. In case you've no US keyboard on site, a remapping from US keyboard scancodes exist to retrieve the correct data (Some cheap readers disregard the USB-HID scancodes).
 * Arduino based magnetic card reader via serial port
 
 # Decoding data
@@ -59,9 +59,9 @@ Some card data is decoded and printed on screen while reading:
                             processor for track 3
       --remap-to-us         Remap scancodes to US keyboard layout
       --loop                Loop reading cards
-      --print-verbose       Print verbose trackd data
+      --print-verbose       Print verbose track data
       --log-level {CRITICAL,FATAL,ERROR,WARN,WARNING,INFO,DEBUG,NOTSET}
-                            Print verbose trackd data
+                            Print verbose track data
 
 # Arduino reader usage
 
