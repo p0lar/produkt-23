@@ -27,8 +27,8 @@ def main():
                     "noop", "iso7813", "bahn"], default="noop", help="processor for track 2")
     ap.add_argument("--track3-processor", choices=[
                     "noop", "iso4909", "girocard", "bahn"], default="noop", help="processor for track 3")
-    ap.add_argument("--remap-to-us", action="store_true",
-                    default=False, help="Remap scancodes to US keyboard layout")
+    ap.add_argument("--remap-from-us", action="store_true",
+                    default=False, help="Remap scancodes from US keyboard layout")
     ap.add_argument("--loop", action="store_true",
                     default=False, help="Loop reading cards")
     ap.add_argument("--print-verbose", action="store_true",
@@ -59,7 +59,7 @@ def main():
                 bitstring = rdr.read_input()
             elif args.input == "msr100":
                 # No raw reader, decode directly
-                rdr = msr100.Decoder(args.remap_to_us)
+                rdr = msr100.Decoder(args.remap_from_us)
                 trackdata = rdr.read_input()
             else:
                 print(f"Unsupported input: {args.type}")

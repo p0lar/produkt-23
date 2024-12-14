@@ -16,13 +16,13 @@ TRACK_3 = 2
 
 class Decoder(BaseDecoder):
 
-    _remap_to_us = False
+    _remap_from_us = False
 
-    def __init__(self, remap_to_us: False) -> None:
+    def __init__(self, remap_from_us: bool = False) -> None:
         super().__init__()
-        self._remap_to_us = remap_to_us
+        self._remap_from_us = remap_from_us
 
-    def _build_result(self, key_events: list, remap_to_us: bool = False) -> list:
+    def _build_result(self, key_events: list) -> list:
         logger.debug("Reader input took %d seconds, %d keystrokes",
                      key_events[-1].time - key_events[0].time, len(key_events))
         data_read = []
@@ -45,7 +45,7 @@ class Decoder(BaseDecoder):
                     logger.debug("read buffer: '%s'", buf)
                 buf = ""
                 continue
-            if self._remap_to_us:
+            if self._remap_from_us:
                 buf += remap.US_PS2[map_name]
             elif e.name == "space":
                 buf += " "

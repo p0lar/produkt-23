@@ -57,7 +57,7 @@ Some card data is decoded and printed on screen while reading:
                             processor for track 2
       --track3-processor {noop,iso4909,girocard,bahn}
                             processor for track 3
-      --remap-to-us         Remap scancodes to US keyboard layout
+      --remap-from-us       Remap scancodes from US keyboard layout
       --loop                Loop reading cards
       --print-verbose       Print verbose track data
       --log-level {CRITICAL,FATAL,ERROR,WARN,WARNING,INFO,DEBUG,NOTSET}
